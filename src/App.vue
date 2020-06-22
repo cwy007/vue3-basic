@@ -1,20 +1,31 @@
 <template>
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+    <h1>{{count}}</h1>
+    <h1>{{double}}</h1>
+    <button @click="increase">👍+1</button>
   </div>
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import HelloWorld from './components/HelloWorld.vue';
-
-export default Vue.extend({
+import { ref, computed } from 'vue'
+export default {
   name: 'App',
-  components: {
-    HelloWorld
+  setup() {
+    const count = ref(0)
+    const double = computed(() => {
+      return count.value * 2
+    })
+    const increase = () => {
+      count.value++
+    }
+    return {
+      count,
+      increase,
+      double
+    }
   }
-});
+};
 </script>
 
 <style>
@@ -25,5 +36,11 @@ export default Vue.extend({
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+h1 {
+  font-size: 5rem;
+}
+button {
+  font-size: 3rem;
 }
 </style>
