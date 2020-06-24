@@ -3,6 +3,10 @@
     <img alt="Vue logo" src="./assets/logo.png">
     <h1>{{count}}</h1>
     <h1>{{double}}</h1>
+    <ul>
+      <li v-for="number in numbers" :key="number"><h1>{{number}}</h1></li>
+    </ul>
+    <h1>{{person.name}}</h1>
     <button @click="increase">👍+1</button>
   </div>
 </template>
@@ -13,6 +17,8 @@ interface DataProps {
   count: number;
   double: number;
   increase: () => void;
+  numbers: number[];
+  person: { name?: string };
 }
 export default {
   name: 'App',
@@ -27,8 +33,12 @@ export default {
     const data: DataProps  = reactive({
       count: 0,
       increase: () => { data.count++},
-      double: computed(() => data.count * 2)
+      double: computed(() => data.count * 2),
+      numbers: [0, 1, 2],
+      person: {}
     })
+    data.numbers[0] = 5
+    data.person.name = 'viking'
     const refData = toRefs(data)
     return {
       ...refData
