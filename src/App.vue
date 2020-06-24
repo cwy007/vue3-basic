@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts">
-import { ref, computed, reactive, toRefs } from 'vue'
+import { ref, computed, reactive, toRefs, onMounted, onUpdated, onRenderTriggered } from 'vue'
 interface DataProps {
   count: number;
   double: number;
@@ -30,6 +30,15 @@ export default {
     // const increase = () => {
     //   count.value++
     // }
+    onMounted(() => {
+      console.log('mounted')
+    })
+    onUpdated(() => {
+      console.log('updated')
+    })
+    onRenderTriggered((event) => {
+      console.log(event)
+    })
     const data: DataProps  = reactive({
       count: 0,
       increase: () => { data.count++},
