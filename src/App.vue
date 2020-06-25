@@ -4,13 +4,15 @@
     <h1>{{count}}</h1>
     <h1>{{double}}</h1>
     <h1>{{greetings}}</h1>
+    <h1>X: {{x}}, Y: {{y}}</h1>
     <button @click="increase">👍+1</button><br/>
     <button @click="updateGreeting">Update Title</button>
   </div>
 </template>
 
 <script lang="ts">
-import { ref, computed, reactive, toRefs, watch } from 'vue'
+import { ref, computed, reactive, toRefs, watch, onMounted, onUnmounted } from 'vue'
+import useMousePosition from './hooks/useMousePosition'
 interface DataProps {
   count: number;
   double: number;
@@ -24,6 +26,7 @@ export default {
       increase: () => { data.count++},
       double: computed(() => data.count * 2),
     })
+    const { x, y } = useMousePosition()
     const greetings = ref('')
     const updateGreeting = () => {
       greetings.value += 'Hello! '
@@ -38,7 +41,9 @@ export default {
     return {
       ...refData,
       greetings,
-      updateGreeting
+      updateGreeting,
+      x,
+      y
     }
   }
 };
