@@ -4,6 +4,8 @@
     <h1>{{count}}</h1>
     <h1>{{double}}</h1>
     <h1>{{greetings}}</h1>
+    <h1 v-if="loading">Loading!...</h1>
+    <img v-if="loaded" :src="result.message" >
     <h1>X: {{x}}, Y: {{y}}</h1>
     <button @click="increase">👍+1</button><br/>
     <button @click="updateGreeting">Update Title</button>
@@ -13,6 +15,7 @@
 <script lang="ts">
 import { ref, computed, reactive, toRefs, watch, onMounted, onUnmounted } from 'vue'
 import useMousePosition from './hooks/useMousePosition'
+import useURLLoader from './hooks/useURLLoader'
 interface DataProps {
   count: number;
   double: number;
@@ -27,23 +30,22 @@ export default {
       double: computed(() => data.count * 2),
     })
     const { x, y } = useMousePosition()
+    const { result, loading, loaded } = useURLLoader('https://dog.ceo/api/breeds/image/random')
     const greetings = ref('')
     const updateGreeting = () => {
       greetings.value += 'Hello! '
     }
-    watch([greetings, () => data.count], (newValue, oldValue) => {
-      console.log('old', oldValue)
-      console.log('new', newValue)
-      document.title = 'updated' + greetings.value + data.count
-    })
-    
+        
     const refData = toRefs(data)
     return {
       ...refData,
       greetings,
       updateGreeting,
       x,
-      y
+      y,
+      result,
+      loading,
+      loaded
     }
   }
 };
