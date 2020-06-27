@@ -5,7 +5,7 @@
     <h1>{{double}}</h1>
     <h1>{{greetings}}</h1>
     <h1 v-if="loading">Loading!...</h1>
-    <img v-if="loaded" :src="result.message" >
+    <img v-if="loaded" :src="result[0].url" >
     <h1>X: {{x}}, Y: {{y}}</h1>
     <button @click="increase">👍+1</button><br/>
     <button @click="updateGreeting">Update Title</button>
@@ -21,6 +21,16 @@ interface DataProps {
   double: number;
   increase: () => void;
 }
+interface DogResult {
+  message: string;
+  status: string;
+}
+interface CatResult {
+  id: string;
+  url: string;
+  width: number;
+  height: number;
+}
 export default {
   name: 'App',
   setup() {
@@ -30,12 +40,16 @@ export default {
       double: computed(() => data.count * 2),
     })
     const { x, y } = useMousePosition()
-    const { result, loading, loaded } = useURLLoader('https://dog.ceo/api/breeds/image/random')
+    const { result, loading, loaded } = useURLLoader<CatResult[]>('https://api.thecatapi.com/v1/images/search?limit=1')
+    watch(result, () => {
+      if (result.value) {
+        console.log('value', result.value[0].url)
+      }
+    })
     const greetings = ref('')
     const updateGreeting = () => {
       greetings.value += 'Hello! '
     }
-        
     const refData = toRefs(data)
     return {
       ...refData,
