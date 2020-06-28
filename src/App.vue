@@ -4,6 +4,7 @@
     <h1>{{count}}</h1>
     <h1>{{double}}</h1>
     <h1>{{greetings}}</h1>
+    <modal />
     <h1 v-if="loading">Loading!...</h1>
     <img v-if="loaded" :src="result[0].url" >
     <h1>X: {{x}}, Y: {{y}}</h1>
@@ -16,6 +17,7 @@
 import { ref, computed, reactive, toRefs, watch, onMounted, onUnmounted } from 'vue'
 import useMousePosition from './hooks/useMousePosition'
 import useURLLoader from './hooks/useURLLoader'
+import Modal from './components/Modal.vue'
 interface DataProps {
   count: number;
   double: number;
@@ -33,6 +35,9 @@ interface CatResult {
 }
 export default {
   name: 'App',
+  components: {
+    Modal
+  },
   setup() {
     const data: DataProps  = reactive({
       count: 0,
