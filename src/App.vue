@@ -4,7 +4,8 @@
     <h1>{{count}}</h1>
     <h1>{{double}}</h1>
     <h1>{{greetings}}</h1>
-    <modal />
+    <button @click="openModal">Open Modal</button><br/>
+    <modal :isOpen="modalIsOpen" @close-modal="onModalClose"> My Modal !!!!</modal>
     <h1 v-if="loading">Loading!...</h1>
     <img v-if="loaded" :src="result[0].url" >
     <h1>X: {{x}}, Y: {{y}}</h1>
@@ -56,6 +57,13 @@ export default {
       greetings.value += 'Hello! '
     }
     const refData = toRefs(data)
+    const modalIsOpen = ref(false)
+    const openModal = () => {
+      modalIsOpen.value = true
+    }
+    const onModalClose = () => {
+      modalIsOpen.value = false
+    }
     return {
       ...refData,
       greetings,
@@ -64,7 +72,10 @@ export default {
       y,
       result,
       loading,
-      loaded
+      loaded,
+      modalIsOpen,
+      openModal,
+      onModalClose
     }
   }
 };
