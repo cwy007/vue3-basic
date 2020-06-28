@@ -4,6 +4,14 @@
     <h1>{{count}}</h1>
     <h1>{{double}}</h1>
     <h1>{{greetings}}</h1>
+    <Suspense>
+      <template #default>
+        <async-show />
+      </template>
+      <template #fallback>
+        <h1>Loading !...</h1>
+      </template>
+    </Suspense>
     <button @click="openModal">Open Modal</button><br/>
     <modal :isOpen="modalIsOpen" @close-modal="onModalClose"> My Modal !!!!</modal>
     <h1 v-if="loading">Loading!...</h1>
@@ -19,6 +27,7 @@ import { ref, computed, reactive, toRefs, watch, onMounted, onUnmounted } from '
 import useMousePosition from './hooks/useMousePosition'
 import useURLLoader from './hooks/useURLLoader'
 import Modal from './components/Modal.vue'
+import AsyncShow from './components/AsyncShow.vue'
 interface DataProps {
   count: number;
   double: number;
@@ -37,7 +46,8 @@ interface CatResult {
 export default {
   name: 'App',
   components: {
-    Modal
+    Modal,
+    AsyncShow,
   },
   setup() {
     const data: DataProps  = reactive({
