@@ -4,9 +4,11 @@
     <h1>{{count}}</h1>
     <h1>{{double}}</h1>
     <h1>{{greetings}}</h1>
+    <p>{{error}}</p>
     <Suspense>
       <template #default>
         <async-show />
+        <dog-show />
       </template>
       <template #fallback>
         <h1>Loading !...</h1>
@@ -23,11 +25,12 @@
 </template>
 
 <script lang="ts">
-import { ref, computed, reactive, toRefs, watch, onMounted, onUnmounted } from 'vue'
+import { ref, computed, reactive, toRefs, watch, onErrorCaptured } from 'vue'
 import useMousePosition from './hooks/useMousePosition'
 import useURLLoader from './hooks/useURLLoader'
 import Modal from './components/Modal.vue'
 import AsyncShow from './components/AsyncShow.vue'
+import DogShow from './components/DogShow.vue'
 interface DataProps {
   count: number;
   double: number;
@@ -48,8 +51,14 @@ export default {
   components: {
     Modal,
     AsyncShow,
+    DogShow,
   },
   setup() {
+    const error = ref(null)
+    onErrorCaptured((e: any) => {
+      error.value = e
+      return true
+    })
     const data: DataProps  = reactive({
       count: 0,
       increase: () => { data.count++},
@@ -85,7 +94,8 @@ export default {
       loaded,
       modalIsOpen,
       openModal,
-      onModalClose
+      onModalClose,
+      error
     }
   }
 };
