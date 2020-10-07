@@ -7,8 +7,10 @@
     <p>{{error}}</p>
     <Suspense>
       <template #default>
-        <async-show />
-        <dog-show />
+        <div>
+          <async-show />
+          <dog-show />
+        </div>
       </template>
       <template #fallback>
         <h1>Loading !...</h1>
