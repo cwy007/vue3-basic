@@ -6,13 +6,20 @@
     <h1>{{double}}</h1>
     <h1>{{greetings}}</h1>
     <p>{{error}}</p>
+    <!-- 异步请求，promise -->
     <Suspense>
+      <!-- 具名插槽 v-slot:default -->
+      <!-- 满足一定条件后，显示 default 插槽中的内容 -->
       <template #default>
         <div>
+          <!-- 异步组件都 resolve 后，展示对应内容 -->
           <async-show />
           <dog-show />
         </div>
       </template>
+
+      <!-- 具名插槽 v-slot:fallback -->
+      <!-- 初始显示插槽 fallback 中的内容 -->
       <template #fallback>
         <h1>Loading !...</h1>
       </template>
@@ -30,6 +37,8 @@
 
 <script lang="ts">
 // ref
+// 使用生命周期函数 onErrorCaptured 抓取错误
+//
 import { ref, computed, reactive, toRefs, watch, onErrorCaptured } from 'vue'
 import useMousePosition from './hooks/useMousePosition' // 代码重用
 import useURLLoader from './hooks/useURLLoader' // 自定义hook
@@ -61,9 +70,12 @@ export default {
   // 准备
   setup() {
     const error = ref(null)
+    // 使用生命周期函数 onErrorCaptured 抓取错误
+    // 监控 Suspense 中的错误：eg：图片请求报错
+    //
     onErrorCaptured((e: any) => {
       error.value = e
-      return true
+      return true // 事件是否向上传播
     })
 
     // reactive 响应式对象
