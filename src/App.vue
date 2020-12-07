@@ -31,7 +31,7 @@
 // ref
 import { ref, computed, reactive, toRefs, watch, onErrorCaptured } from 'vue'
 import useMousePosition from './hooks/useMousePosition' // 代码重用
-import useURLLoader from './hooks/useURLLoader'
+import useURLLoader from './hooks/useURLLoader' // 自定义hook
 import Modal from './components/Modal.vue'
 import AsyncShow from './components/AsyncShow.vue'
 import DogShow from './components/DogShow.vue'
@@ -75,6 +75,8 @@ export default {
 
     const { x, y } = useMousePosition()
 
+    // typescript 泛型
+    // funcname<T>
     const { result, loading, loaded } = useURLLoader<CatResult[]>('https://api.thecatapi.com/v1/images/search?limit=1')
     watch(result, () => {
       if (result.value) {
