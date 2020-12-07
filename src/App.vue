@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png">
+    <!--  模版中使用 ref 对象，会有自动转换 -->
     <h1>{{count}}</h1>
     <h1>{{double}}</h1>
     <h1>{{greetings}}</h1>
@@ -27,8 +28,9 @@
 </template>
 
 <script lang="ts">
+// ref
 import { ref, computed, reactive, toRefs, watch, onErrorCaptured } from 'vue'
-import useMousePosition from './hooks/useMousePosition'
+import useMousePosition from './hooks/useMousePosition' // 代码重用
 import useURLLoader from './hooks/useURLLoader'
 import Modal from './components/Modal.vue'
 import AsyncShow from './components/AsyncShow.vue'
@@ -55,29 +57,37 @@ export default {
     AsyncShow,
     DogShow,
   },
+  // 准备
   setup() {
     const error = ref(null)
     onErrorCaptured((e: any) => {
       error.value = e
       return true
     })
+
+    // reactive 响应式对象
+    // data.count
     const data: DataProps  = reactive({
-      count: 0,
-      increase: () => { data.count++},
-      double: computed(() => data.count * 2),
+      count: 0,                               // data 是响应式的，data.count 不是响应式的
+      increase: () => { data.count++ },
+      double: computed(() => data.count * 2), // 计算属性
     })
+
     const { x, y } = useMousePosition()
+
     const { result, loading, loaded } = useURLLoader<CatResult[]>('https://api.thecatapi.com/v1/images/search?limit=1')
     watch(result, () => {
       if (result.value) {
         console.log('value', result.value[0].url)
       }
     })
+
     const greetings = ref('')
     const updateGreeting = () => {
       greetings.value += 'Hello! '
     }
     const refData = toRefs(data)
+
     const modalIsOpen = ref(false)
     const openModal = () => {
       modalIsOpen.value = true
@@ -85,6 +95,7 @@ export default {
     const onModalClose = () => {
       modalIsOpen.value = false
     }
+    // return 精确控制属性和方法的导出
     return {
       ...refData,
       greetings,
