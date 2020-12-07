@@ -19,6 +19,7 @@
     </Suspense>
     <button @click="openModal">Open Modal</button><br/>
     <modal :isOpen="modalIsOpen" @close-modal="onModalClose"> My Modal !!!!</modal>
+
     <h1 v-if="loading">Loading!...</h1>
     <img v-if="loaded" :src="result[0].url" >
     <h1>X: {{x}}, Y: {{y}}</h1>

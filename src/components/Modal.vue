@@ -1,6 +1,7 @@
 <template>
 <teleport to="#modal">
   <div id="center" v-if="isOpen">
+    <!-- <slot>默认内容</slot> -->
     <h2><slot>this is a modal</slot></h2>
     <button @click="buttonClick">Close</button>
   </div>
@@ -12,13 +13,25 @@ export default defineComponent({
   props: {
     isOpen: Boolean,
   },
+  // 组件向外触发事件的名称
+  // 明确显示组件的自定义事件有哪些
+  //
   emits: {
-    'close-modal': null
+    // 值为 null 不对事件进行验证
+    'close-modal': null,
+    // 带事件验证
+    // 值为函数，对触发的事件进行运行时验证
+    // type reference
+    // 'close-modal': (payload: any) => {
+    //   return payload.type === 'close'
+    // }
+    // context.emit('close-modal', {type: "hello"})
   },
   setup(props, context) {
     const buttonClick = () => {
-      context.emit('close-modal')
+      context.emit('close-modal') // 组件向外触发事件的方法
     }
+
     return {
       buttonClick
     }
